@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public abstract class MinionBaseScript : MonoBehaviour
 {
@@ -52,9 +53,31 @@ public abstract class MinionBaseScript : MonoBehaviour
         return false;
     }
 
+
+    /// <summary>
+    /// Moves minion to target.
+    /// </summary>
     protected virtual void MoveToTarget()
     {
         Vector3 direction = (targetPlayer.transform.position - transform.position).normalized;
         transform.position += direction * speed * Time.deltaTime;
+    }
+
+    /// <summary>
+    /// Moves minion to target while keeping distance.
+    /// </summary>
+    /// <param name="distanceToKeep">Distance to keep from the target.</param>
+    protected virtual void MoveToTarget(float distanceToKeep)
+    {
+        Vector3 direction = (targetPlayer.transform.position - transform.position).normalized;
+        Vector3 targetPosition = targetPlayer.transform.position - direction * distanceToKeep;
+
+        float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+
+        if (distanceToTarget > 0.1f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        }
+
     }
 }

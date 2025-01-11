@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
 
     private NPC2Behavior npc2script;
 
-    private Vector3 gunBarrelOffset = new Vector3(0.1f, 0, 1f);
+    public float gunBarrelOffset = 1.5f;
 
 
     void Start()
@@ -45,10 +45,21 @@ public class PlayerController : MonoBehaviour
         HandleRotation();
 
         // Shooting
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (teamID == 1)
         {
-            ShootProjectile();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ShootProjectile();
+            }
         }
+        else if (teamID == 2)
+        {
+            if (Input.GetKeyDown(KeyCode.N))
+            {
+                ShootProjectile();
+            }
+        }
+        
 
         // Handle death
         if (health == 0)
@@ -60,28 +71,57 @@ public class PlayerController : MonoBehaviour
     void HandleMovement()
     {
         // Handle forward/backward movement
-        if (Input.GetKey(KeyCode.W))
+        if (teamID == 1)
         {
-            transform.position += transform.forward * speed * Time.deltaTime; // Move forward
+            if (Input.GetKey(KeyCode.W))
+            {
+                transform.position += transform.forward * speed * Time.deltaTime; // Move forward
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                transform.position -= transform.forward * speed * Time.deltaTime; // Move backward
+            }
         }
-        if (Input.GetKey(KeyCode.S))
+        else if (teamID == 2)
         {
-            transform.position -= transform.forward * speed * Time.deltaTime; // Move backward
+            if (Input.GetKey(KeyCode.I))
+            {
+                transform.position += transform.forward * speed * Time.deltaTime; // Move forward
+            }
+            if (Input.GetKey(KeyCode.K))
+            {
+                transform.position -= transform.forward * speed * Time.deltaTime; // Move backward
+            }
         }
+        
     }
 
     void HandleRotation()
     {
         // Handle left/right rotation
-        if (Input.GetKey(KeyCode.A))
+        if (teamID == 1)
         {
-            transform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime); // Rotate left
+            if (Input.GetKey(KeyCode.A))
+            {
+                transform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime); // Rotate left
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime); // Rotate right
+            }
         }
-        if (Input.GetKey(KeyCode.D))
+        else if (teamID == 2)
         {
-            transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime); // Rotate right
+            if (Input.GetKey(KeyCode.J))
+            {
+                transform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime); // Rotate left
+            }
+            if (Input.GetKey(KeyCode.L))
+            {
+                transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime); // Rotate right
+            }
         }
-
+        
         // Child camera rotates with the player
         if (cameraTransform != null)
         {
@@ -94,7 +134,7 @@ public class PlayerController : MonoBehaviour
         // Instantiate the projectile and set its velocity
         Transform gunPosition = transform.Find("Glock"); // Shoot from
         Vector3 gunPositionV = gunPosition.position;
-        GameObject projectile = Instantiate(projectilePrefab, gunPositionV + gunBarrelOffset, Quaternion.Euler(90, transform.eulerAngles.y, 0));
+        GameObject projectile = Instantiate(projectilePrefab, gunPositionV + gunPosition.right * gunBarrelOffset, Quaternion.Euler(90, transform.eulerAngles.y, 0));
         Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
 
         if (projectileRb != null)
@@ -106,7 +146,7 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         // Check if the player collides with a projectile
-        if (collision.gameObject.CompareTag("Projectile2")) // Ensure the projectile prefab has the tag "Projectile2"
+        if (collision.gameObject.CompareTag("Projectile")) // Ensure the projectile prefab has the tag "Projectile"
         {
             TakeDamage(10); // TODO as variable / OOP
 
@@ -114,16 +154,6 @@ public class PlayerController : MonoBehaviour
             Destroy(collision.gameObject);
         }
 
-        //if (collision.gameObject.CompareTag("NPC2"))
-        //{
-        //    GameObject npc2Object = GameObject.FindGameObjectWithTag("NPC2");
-        //    Debug.Log("Found NPC2");
-        //    npc2script = npc2Object.GetComponent<NPC2Behavior>();
-        //    if (npc2script.isPlayer1Killable)
-        //    {
-        //        TakeDamage(50);
-        //    }
-        //} // Old system for death on collision with NPC2
     }
 
     void TakeDamage(int damage)

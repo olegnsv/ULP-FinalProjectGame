@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 213203714109040610}
   - component: {fileID: -5150102851753212031}
   - component: {fileID: 2791953990627637747}
-  - component: {fileID: 1978177101997525893}
-  - component: {fileID: 5800368934694567812}
+  - component: {fileID: 6578247300110486472}
+  - component: {fileID: 6526879715261026120}
   m_Layer: 0
-  m_Name: NPC2-1
+  m_Name: NPC2-Melee
   m_TagString: NPC2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.9999998, y: 1, z: -1.9999999}
-  m_LocalScale: {x: 1, y: 1, z: 0.69}
+  m_LocalScale: {x: 2.5, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -140,21 +140,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1978177101997525893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2113277136565778326}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d975e17c19c7154fa411287245fd435, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
-  isPlayer1Killable: 0
---- !u!136 &5800368934694567812
+--- !u!136 &6578247300110486472
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -177,3 +163,16 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6526879715261026120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113277136565778326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fce32594dc41045488433c54e67670de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamID: 2
