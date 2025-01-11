@@ -2,7 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
-public abstract class MinionBaseScript : MonoBehaviour
+public abstract class MinionBaseScript : MonoBehaviour // INHERITANCE
 {
 
     protected GameObject targetPlayer;
@@ -43,12 +43,6 @@ public abstract class MinionBaseScript : MonoBehaviour
                 targetPlayer = player;
                 return true;
             }
-            else
-            {
-                Debug.Log("Enemy player not found");
-                return false;
-            }
-
         }
         return false;
     }
@@ -57,7 +51,7 @@ public abstract class MinionBaseScript : MonoBehaviour
     /// <summary>
     /// Moves minion to target.
     /// </summary>
-    protected virtual void MoveToTarget()
+    protected virtual void MoveToTarget() // POLYMORPHISM
     {
         Vector3 direction = (targetPlayer.transform.position - transform.position).normalized;
         transform.position += direction * speed * Time.deltaTime;
@@ -67,7 +61,7 @@ public abstract class MinionBaseScript : MonoBehaviour
     /// Moves minion to target while keeping distance.
     /// </summary>
     /// <param name="distanceToKeep">Distance to keep from the target.</param>
-    protected virtual void MoveToTarget(float distanceToKeep)
+    protected virtual void MoveToTarget(float distanceToKeep) // POLYMORPHISM
     {
         Vector3 direction = (targetPlayer.transform.position - transform.position).normalized;
         Vector3 targetPosition = targetPlayer.transform.position - direction * distanceToKeep;
