@@ -9,6 +9,8 @@ public class PlayerController2 : MonoBehaviour
     public float rotationSpeed = 90.0f;
     private Rigidbody playerRb;
 
+    public int teamID;
+
     public GameObject projectilePrefab;
     public float projectileSpeed = 50f;
 

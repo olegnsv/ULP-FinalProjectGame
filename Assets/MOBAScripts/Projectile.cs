@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    public int teamID; // Team ID to be defined in Player script
+
+    public int damageAmount = 15; // Amount of damage of projectile
+
     private void Start()
     {
         // Destroy the projectile after 5 seconds if it hasn't collided

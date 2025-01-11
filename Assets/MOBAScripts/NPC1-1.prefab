@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -5150102851753212031}
   - component: {fileID: 2791953990627637747}
   - component: {fileID: 1138705123758265437}
+  - component: {fileID: 1788303040285823}
   m_Layer: 0
   m_Name: NPC1-1
   m_TagString: NPC1
@@ -146,10 +147,23 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2113277136565778326}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91c1b2425b454fd46a123fc4c2220d79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
   isPlayer2Killable: 0
+--- !u!114 &1788303040285823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113277136565778326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fce32594dc41045488433c54e67670de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamID: 1

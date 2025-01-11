@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     public float rotationSpeed = 90.0f;
     private Rigidbody playerRb;
 
+    public int teamID;
+
     public GameObject projectilePrefab;
     public float projectileSpeed = 50f;
 
@@ -18,6 +20,9 @@ public class PlayerController : MonoBehaviour
     private Transform cameraTransform; // Reference to the child camera
 
     private NPC2Behavior npc2script;
+
+    private Vector3 gunBarrelOffset = new Vector3(0.1f, 0, 1f);
+
 
     void Start()
     {
@@ -35,6 +40,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         HandleMovement();
         HandleRotation();
 
@@ -88,7 +94,7 @@ public class PlayerController : MonoBehaviour
         // Instantiate the projectile and set its velocity
         Transform gunPosition = transform.Find("Glock"); // Shoot from
         Vector3 gunPositionV = gunPosition.position;
-        GameObject projectile = Instantiate(projectilePrefab, gunPositionV + new Vector3(0.1f, 0, 1f), Quaternion.Euler(90, 0, 0));
+        GameObject projectile = Instantiate(projectilePrefab, gunPositionV + gunBarrelOffset, Quaternion.Euler(90, transform.eulerAngles.y, 0));
         Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
 
         if (projectileRb != null)
