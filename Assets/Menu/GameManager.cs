@@ -3,6 +3,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
+    //public bool debugMode;
     public bool isGameRunning;
     public string player1Name;
     public string player2Name;

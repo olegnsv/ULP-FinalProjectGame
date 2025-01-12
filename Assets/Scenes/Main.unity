@@ -3876,6 +3876,10 @@ PrefabInstance:
       propertyPath: healthText
       value: 
       objectReference: {fileID: 2116723024}
+    - target: {fileID: 8145115868081708584, guid: 00716fe666133d74faca8f427105de75, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5a2ffc6d2c7b2af4e9163c7cf40ee913, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5824,10 +5828,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1512750342061454545, guid: 00716fe666133d74faca8f427105de75, type: 3}
-      propertyPath: m_NormalizedViewPortRect.x
-      value: -0.501
-      objectReference: {fileID: 0}
     - target: {fileID: 2391259979824405689, guid: 00716fe666133d74faca8f427105de75, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5872,14 +5872,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player1
       objectReference: {fileID: 0}
-    - target: {fileID: 8002023614755427563, guid: 00716fe666133d74faca8f427105de75, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8052333660561000863, guid: 00716fe666133d74faca8f427105de75, type: 3}
-      propertyPath: healthText
-      value: 
-      objectReference: {fileID: 1837891279}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

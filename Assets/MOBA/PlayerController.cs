@@ -21,9 +21,18 @@ public class PlayerController : MonoBehaviour
 
     public float gunBarrelOffset = 1.5f;
 
+    private Animator playerAnimator;
+
+    private KeyCode forwardKey;
+    private KeyCode backwardKey;
+    private KeyCode leftKey;
+    private KeyCode rightKey;
+    private KeyCode shootKey;
+    private KeyCode reloadKey;
 
     void Start()
     {
+        playerAnimator = GetComponent<Animator>();
         playerRb = GetComponent<Rigidbody>();
         cameraTransform = transform.Find("Camera"); // Child camera is named "Camera"
 
@@ -32,95 +41,64 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("Child camera not found.");
         }
 
+        SetTeamControls();
         UpdateHealthText();
     }
 
-    // Update is called once per frame
     void Update()
     {
-
-        HandleMovement(); // ABSTRACTION
+        HandleMovement();
         HandleRotation();
+        HandleShooting();
+        HandleReloading();
+        HandleDeath();
+    }
 
-        // Shooting
+    void SetTeamControls()
+    {
         if (teamID == 1)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                ShootProjectile();
-            }
+            forwardKey = KeyCode.W;
+            backwardKey = KeyCode.S;
+            leftKey = KeyCode.A;
+            rightKey = KeyCode.D;
+            shootKey = KeyCode.Space;
+            reloadKey = KeyCode.R;
         }
         else if (teamID == 2)
         {
-            if (Input.GetKeyDown(KeyCode.N))
-            {
-                ShootProjectile();
-            }
-        }
-        
-
-        // Handle death
-        if (health == 0)
-        {
-            Destroy(gameObject);
-            GameManager.Instance.isGameRunning = false;
+            forwardKey = KeyCode.I;
+            backwardKey = KeyCode.K;
+            leftKey = KeyCode.J;
+            rightKey = KeyCode.L;
+            shootKey = KeyCode.N;
+            reloadKey = KeyCode.P;
         }
     }
 
     void HandleMovement()
     {
-        // Handle forward/backward movement
-        if (teamID == 1)
+        if (Input.GetKey(forwardKey))
         {
-            if (Input.GetKey(KeyCode.W))
-            {
-                transform.position += transform.forward * speed * Time.deltaTime; // Move forward
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                transform.position -= transform.forward * speed * Time.deltaTime; // Move backward
-            }
+            transform.position += transform.forward * speed * Time.deltaTime; // Move forward
         }
-        else if (teamID == 2)
+        if (Input.GetKey(backwardKey))
         {
-            if (Input.GetKey(KeyCode.I))
-            {
-                transform.position += transform.forward * speed * Time.deltaTime; // Move forward
-            }
-            if (Input.GetKey(KeyCode.K))
-            {
-                transform.position -= transform.forward * speed * Time.deltaTime; // Move backward
-            }
+            transform.position -= transform.forward * speed * Time.deltaTime; // Move backward
         }
-        
     }
 
     void HandleRotation()
     {
-        // Handle left/right rotation
-        if (teamID == 1)
+        if (Input.GetKey(leftKey))
         {
-            if (Input.GetKey(KeyCode.A))
-            {
-                transform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime); // Rotate left
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime); // Rotate right
-            }
+            transform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime); // Rotate left
         }
-        else if (teamID == 2)
+        if (Input.GetKey(rightKey))
         {
-            if (Input.GetKey(KeyCode.J))
-            {
-                transform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime); // Rotate left
-            }
-            if (Input.GetKey(KeyCode.L))
-            {
-                transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime); // Rotate right
-            }
+            transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime); // Rotate right
         }
-        
+
         // Child camera rotates with the player
         if (cameraTransform != null)
         {
@@ -128,10 +106,35 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void HandleShooting()
+    {
+        if (Input.GetKeyDown(shootKey))
+        {
+            ShootProjectile();
+        }
+    }
+
+    void HandleReloading()
+    {
+        if (Input.GetKeyDown(reloadKey))
+        {
+            playerAnimator.SetTrigger("tReload");
+        }
+    }
+
+    void HandleDeath()
+    {
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+            GameManager.Instance.isGameRunning = false;
+        }
+    }
+
     void ShootProjectile()
     {
         // Instantiate the projectile and set its velocity
-        Transform gunPosition = transform.Find("Glock"); // Shoot from
+        Transform gunPosition = transform.Find("Hands/Glock"); // Shoot from
         Vector3 gunPositionV = gunPosition.position;
         GameObject projectile = Instantiate(projectilePrefab, gunPositionV + gunPosition.right * gunBarrelOffset, Quaternion.Euler(90, transform.eulerAngles.y, 0));
         Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
@@ -152,10 +155,9 @@ public class PlayerController : MonoBehaviour
             // Destroy the projectile on collision
             Destroy(collision.gameObject);
         }
-
     }
 
-    void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         health -= damage;
 

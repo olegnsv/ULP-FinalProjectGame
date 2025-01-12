@@ -152,3 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamID: 1
+  distance: 2.5
+  attackOffset: 2.6
+  meleeDamage: 5
+  attackCooldown: 2

@@ -9,15 +9,26 @@ public class MainManager : MonoBehaviour
 
     void Start()
     {
-        player1Nameplate.text = GameManager.Instance.player1Name;
-        player2Nameplate.text = GameManager.Instance.player2Name;
+
+        if (GameManager.Instance == null)
+        {
+            player1Nameplate.text = "Player1";
+            player2Nameplate.text = "Player2";
+        }
+        else
+        {
+            player1Nameplate.text = GameManager.Instance.player1Name;
+            player2Nameplate.text = GameManager.Instance.player2Name;
+        }
+
+        
     }
 
     void Update()
     {
-        if (!GameManager.Instance.isGameRunning)
-        {
-            // Show game over UI
-        }
+        //if (!GameManager.Instance.isGameRunning)
+        //{
+        //    // Show game over UI
+        //}
     }
 }

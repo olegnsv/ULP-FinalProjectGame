@@ -176,3 +176,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamID: 2
+  distance: 2.5
