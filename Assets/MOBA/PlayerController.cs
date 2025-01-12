@@ -5,19 +5,16 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 9.0f;
     public float rotationSpeed = 90.0f;
-    private Rigidbody playerRb;
 
     public int teamID;
 
     public GameObject projectilePrefab;
     public float projectileSpeed = 50f;
 
-    public int health = 100;
+    private int health = 100;
     public TextMeshProUGUI healthText;
 
     private Transform cameraTransform; // Reference to the child camera
-
-    private NPC2Behavior npc2script;
 
     public float gunBarrelOffset = 1.5f;
 
@@ -30,11 +27,20 @@ public class PlayerController : MonoBehaviour
     private KeyCode shootKey;
     private KeyCode reloadKey;
 
+    public int Health
+    {
+        get { return health; }
+        set
+        {
+            health = Mathf.Clamp(value, 0, 100);
+            UpdateHealthText();
+        }
+    }
+
     void Start()
     {
         playerAnimator = GetComponent<Animator>();
-        playerRb = GetComponent<Rigidbody>();
-        cameraTransform = transform.Find("Camera"); // Child camera is named "Camera"
+        cameraTransform = transform.Find("Body/Camera"); // Child camera is named "Camera"
 
         if (cameraTransform == null)
         {
@@ -52,27 +58,40 @@ public class PlayerController : MonoBehaviour
         HandleShooting();
         HandleReloading();
         HandleDeath();
+
+        if (!GameManager.Instance.isGameRunning)
+        {
+            forwardKey = KeyCode.None;
+            backwardKey = KeyCode.None;
+            leftKey = KeyCode.None;
+            rightKey = KeyCode.None;
+            shootKey = KeyCode.None;
+            reloadKey = KeyCode.None;
+        }
     }
 
     void SetTeamControls()
     {
-        if (teamID == 1)
+        if (GameManager.Instance.isGameRunning)
         {
-            forwardKey = KeyCode.W;
-            backwardKey = KeyCode.S;
-            leftKey = KeyCode.A;
-            rightKey = KeyCode.D;
-            shootKey = KeyCode.Space;
-            reloadKey = KeyCode.R;
-        }
-        else if (teamID == 2)
-        {
-            forwardKey = KeyCode.I;
-            backwardKey = KeyCode.K;
-            leftKey = KeyCode.J;
-            rightKey = KeyCode.L;
-            shootKey = KeyCode.N;
-            reloadKey = KeyCode.P;
+            if (teamID == 1)
+            {
+                forwardKey = KeyCode.W;
+                backwardKey = KeyCode.S;
+                leftKey = KeyCode.A;
+                rightKey = KeyCode.D;
+                shootKey = KeyCode.Space;
+                reloadKey = KeyCode.R;
+            }
+            else if (teamID == 2)
+            {
+                forwardKey = KeyCode.I;
+                backwardKey = KeyCode.K;
+                leftKey = KeyCode.J;
+                rightKey = KeyCode.L;
+                shootKey = KeyCode.N;
+                reloadKey = KeyCode.P;
+            }
         }
     }
 
@@ -124,17 +143,18 @@ public class PlayerController : MonoBehaviour
 
     void HandleDeath()
     {
-        if (health <= 0)
+        if (Health <= 0)
         {
-            Destroy(gameObject);
+            playerAnimator.SetTrigger("tDeath");
             GameManager.Instance.isGameRunning = false;
         }
     }
 
+
     void ShootProjectile()
     {
         // Instantiate the projectile and set its velocity
-        Transform gunPosition = transform.Find("Hands/Glock"); // Shoot from
+        Transform gunPosition = transform.Find("Body/Hands/Glock"); // Shoot from
         Vector3 gunPositionV = gunPosition.position;
         GameObject projectile = Instantiate(projectilePrefab, gunPositionV + gunPosition.right * gunBarrelOffset, Quaternion.Euler(90, transform.eulerAngles.y, 0));
         Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
@@ -159,21 +179,14 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
-
-        UpdateHealthText();
-
-        if (health <= 0)
-        {
-            Debug.Log("Player died.");
-        }
+        Health -= damage;
     }
 
     void UpdateHealthText()
     {
         if (healthText != null)
         {
-            healthText.text = "Жизни: " + health;
+            healthText.text = "Жизни: " + Health;
         }
     }
 }

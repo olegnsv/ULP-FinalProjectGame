@@ -6,6 +6,7 @@ public class MainManager : MonoBehaviour
 
     [SerializeField] private TextMeshPro player1Nameplate;
     [SerializeField] private TextMeshPro player2Nameplate;
+    [SerializeField] private GameObject gameOverScreen;
 
     void Start()
     {
@@ -26,9 +27,9 @@ public class MainManager : MonoBehaviour
 
     void Update()
     {
-        //if (!GameManager.Instance.isGameRunning)
-        //{
-        //    // Show game over UI
-        //}
+        if (!GameManager.Instance.isGameRunning)
+        {
+            gameOverScreen.gameObject.SetActive(true);
+        }
     }
 }
